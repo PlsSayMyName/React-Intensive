@@ -1,0 +1,16 @@
+.input-group {
+    display: flex;
+    flex-direction: column;
+    font-weight: 300;
+    font-size: 1.1rem;
+}
+.input-group:not(:last-child) {
+    margin-bottom: 1.5em;
+}
+.input-group textarea {
+    resize: vertical;
+    min-height: 6.875em;
+    max-height: 10em;
+    margin-top: 1em;
+    padding: .5em;
+}

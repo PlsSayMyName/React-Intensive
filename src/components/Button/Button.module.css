@@ -1,0 +1,30 @@
+button {
+    background: transparent;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    border: 1px solid transparent;
+    background: transparent;
+    padding: .5em 1em;
+    cursor: pointer;
+    transition: .2s;
+}
+button[type="reset"] {
+    border-color: rgba(41, 128, 185, 1);
+    color: rgba(41, 128, 185, 1);
+}
+button[type="reset"]:hover {
+    background: rgba(41, 128, 185, 1);
+    color: rgba(255, 255, 255, 1);
+}
+button[type="submit"] {
+    background:  rgba(41, 128, 185, 1);
+    color: rgba(255, 255, 255, 1);
+}
+button[type="submit"]:hover {
+    background: transparent;
+    color: rgba(41, 128, 185, 1);
+    border-color: rgba(41, 128, 185, 1);
+}
