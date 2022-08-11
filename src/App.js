@@ -25,9 +25,9 @@ class App extends React.Component {
                 <Input type="date" name="Дата рождения"/>
                 <Input type="tel" name="Телефон"/>
                 <Input type="text" name="Сайт"/>
-                <Textarea type="date" name="О себе"/>
-                <Textarea type="date" name="Стек технологий"/>
-                <Textarea type="date" name="Описание последнего проекта"/>
+                <Textarea name="О себе"/>
+                <Textarea name="Стек технологий"/>
+                <Textarea name="Описание последнего проекта"/>
                 <div className="button-box">
                   <Button type="submit" name="Сохранить" />
                   <Button type="reset" name="Отмена"/>
