@@ -5,10 +5,6 @@ import Input from './components/Input/Input';
 import Textarea from './components/Textarea/Textarea';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     return (
       <section className='app'>
