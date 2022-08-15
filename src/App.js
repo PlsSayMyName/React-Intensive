@@ -83,8 +83,6 @@ class App extends React.Component {
     }
 
     this.setState({ errors: errors });
-    // console.log(Object.keys(this.state.errors));
-    console.log(formIsValid);
     return formIsValid;
   }
 
@@ -116,7 +114,7 @@ class App extends React.Component {
   }
 
   // Textarea
-  textareaLimit(field, e){
+  textareaLimit(field, e) {
     const charCount = e.target.value.length;
     const maxChar = this.state.chrLimit;
     if(e.target.value.length > maxChar) return;
@@ -124,8 +122,9 @@ class App extends React.Component {
     let fields = this.state.fields;
     fields[field] = e.target.value;
     this.setState({fields});
+    // Не совсем понимаю, как зайдествовать для каждого поля счетчик отдельно. Понимаю, как работает setState и то, что prev мне нужно указать на прошлое значение.
     this.setState((prev) => {return{chrLeft: charLength} });
-}
+  }
 
   onChangeField(field, e) {
     let fields = this.state.fields;
@@ -133,12 +132,15 @@ class App extends React.Component {
     this.setState({fields});
   }
 
+  resetForm = () => {
+    this.setState({
+      fields: {name: '', lastName: '', date: '', tel: '', site: '', about: '', tech: '', desc: ''},
+    });
+  }
+
   submitForm(e) {
     e.preventDefault();
-    // let fields = this.state.fields;
-    console.log(this.state.formIsValid);
     if (this.handleValidation()) {
-      console.log('123');
       this.setState({formIsValid: true})
     } else {
       alert("В форме присутствуют ошибки. Пожалуйста, исправьте их и попробуйте снова");
@@ -187,7 +189,7 @@ class App extends React.Component {
                 }
                 <div className="button-box">
                   <Button type="submit" name="Сохранить" />
-                  <Button type="reset" name="Отмена"/>
+                  <Button type="reset" onClick={this.resetForm} name="Отмена"/>
                 </div>
                 </>
                 :
