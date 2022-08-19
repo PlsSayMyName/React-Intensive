@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/React-Intensive/static/css/main.2c0497b6.css",
-    "main.js": "/React-Intensive/static/js/main.dc50f28c.js",
+    "main.css": "/React-Intensive/static/css/main.e7082db5.css",
+    "main.js": "/React-Intensive/static/js/main.b0b1fe1a.js",
     "static/media/form-bg.jpg": "/React-Intensive/static/media/form-bg.6c645ef9f26d26c2a150.jpg",
     "index.html": "/React-Intensive/index.html",
-    "main.2c0497b6.css.map": "/React-Intensive/static/css/main.2c0497b6.css.map",
-    "main.dc50f28c.js.map": "/React-Intensive/static/js/main.dc50f28c.js.map"
+    "main.e7082db5.css.map": "/React-Intensive/static/css/main.e7082db5.css.map",
+    "main.b0b1fe1a.js.map": "/React-Intensive/static/js/main.b0b1fe1a.js.map"
   },
   "entrypoints": [
-    "static/css/main.2c0497b6.css",
-    "static/js/main.dc50f28c.js"
+    "static/css/main.e7082db5.css",
+    "static/js/main.b0b1fe1a.js"
   ]
 }
