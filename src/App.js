@@ -1,104 +1,92 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Button from './components/Button/Button';
+import CompletedForm from './components/CompletedForm/CompletedForm';
 import Input from './components/Input/Input';
+import Popup from './components/Popup/Popup';
 import Textarea from './components/Textarea/Textarea';
 
-class App extends React.Component {
-  constructor(props){
-    super(props);
+const initValues = {
+  name: '',
+  lastName: '',
+  date: '',
+  tel: '',
+  site: '',
+  about: '',
+  tech: '',
+  desc: '',
+  errors: {},
+  formIsValid: false,
+}
 
-    this.state = {
-      fields: { name: '', lastName: '', date: '', tel: '', site: '', about: '', tech: '', desc: '' },
-      errors: {},
-      formIsValid: false,
-      chrLimit: 600,
-      chrLeft: 600,
-    };
-  }
+function App() {
+  const [state, setState] = useState(initValues);
+  const [isShowUp, setIsShowPopup] = useState(false);
 
-  handleValidation() {
-    let fields = this.state.fields;
+  function handleValidation() {
     let errors = {};
     let formIsValid = true;
+    console.log(state);
 
     // Name
-    if (!fields["name"]) {
+    if (!state.name) {
       formIsValid = false;
-      errors["name"] = "Поле не может быть пустым";
+      errors.name = "Поле не может быть пустым";
     }
-
-    if (typeof fields["name"] !== "undefined") {
-      if (!fields["name"].match(/^([а-яё]+|[a-z]+)$/i)) {
-        formIsValid = false;
-        errors["name"] = "Поле должно содержать только кириллические или латинские буквы";
-      }
-      if (fields["name"].charAt(0) !== fields["name"].charAt(0).toUpperCase()) {
-        formIsValid = false;
-        errors["name"] = "Первый символ должен быть с большой буквы";
-      }
+    if (!state.name.match(/^([а-яё]+|[a-z]+)$/i)) {
+      formIsValid = false;
+      errors.name = "Поле должно содержать только кириллические или латинские буквы";
+    }
+    if (state.name.charAt(0) !== state.name.charAt(0).toUpperCase()) {
+      formIsValid = false;
+      errors.name = "Первый символ должен быть с большой буквы";
     }
 
     // LastName
-    if (!fields["lastName"]) {
+    if (!state.lastName) {
       formIsValid = false;
-      errors["lastName"] = "Поле не может быть пустым";
+      errors.lastName = "Поле не может быть пустым";
     }
-
-    if (typeof fields["lastName"] !== "undefined") {
-      if (!fields["lastName"].match(/^([а-яё]+|[a-z]+)$/i)) {
-        formIsValid = false;
-        errors["lastName"] = "Поле должно содержать только кириллические или латинские буквы";
-      }
-      if (fields["lastName"].charAt(0) !== fields["lastName"].charAt(0).toUpperCase()) {
-        formIsValid = false;
-        errors["lastName"] = "Первый символ должен быть с большой буквы";
-      }
+    if (!state.lastName.match(/^([а-яё]+|[a-z]+)$/i)) {
+      formIsValid = false;
+      errors.lastName = "Поле должно содержать только кириллические или латинские буквы";
+    }
+    if (state.lastName.charAt(0) !== state.lastName.charAt(0).toUpperCase()) {
+      formIsValid = false;
+      errors.lastName = "Первый символ должен быть с большой буквы";
     }
 
     // Phone
-    if (!fields["tel"]) {
+    if (!state.tel) {
       formIsValid = false;
-      errors["tel"] = "Поле не может быть пустым";
+      errors.tel = "Поле не может быть пустым";
     }
-
-    if (typeof fields["tel"] !== "undefined") {
-      if (fields["tel"].length !== 13) {
-        formIsValid = false;
-        errors["tel"] = "Введите корректный номер телефона";
-      }
+    if (state.tel.length !== 13) {
+      formIsValid = false;
+      errors.tel = "Введите корректный номер телефона";
     }
 
     // Website
-    if (!fields["site"]) {
+    if (!state.site) {
       formIsValid = false;
-      errors["site"] = "Поле не может быть пустым";
+      errors.site = "Поле не может быть пустым";
     }
-
-    if (typeof fields["site"] !== "undefined") {
-      if (!fields["site"].match(/https:\/\//)) {
-        formIsValid = false;
-        errors["site"] = "Название сайта должно начинаться с https://";
-      }
+    if (!state.site.match(/https:\/\//)) {
+      formIsValid = false;
+      errors.site = "Название сайта должно начинаться с https://";
     }
-
-    this.setState({ errors: errors });
+    setState({ ...state, errors: errors });
     return formIsValid;
   }
-
   // Phone field
-  phoneMask(field, e) {
+  function phoneMask(e) {
     const value = e.target.value.replace(/\D/g, '');
     const numberLength = 9;
     let result = "+";
     for (let i = 0; i < value.length && i < numberLength; i++) {
       switch (i) {
         case 1:
-          result += "-";
-          break;
         case 5:
-          result += "-";
-          break;
         case 7:
           result += "-";
           break;
@@ -107,110 +95,72 @@ class App extends React.Component {
       }
       result += value[i];
     }
-    e.target.value = result;
-    let fields = this.state.fields;
-    fields[field] = result;
-    this.setState({fields});
+    console.log(result);
+    setState({
+      ...state,
+      tel: result,
+    })
   }
 
-  // Textarea
-  textareaLimit(field, e) {
-    const charCount = e.target.value.length;
-    const maxChar = this.state.chrLimit;
-    if(e.target.value.length > maxChar) return;
-    const charLength = maxChar - charCount;
-    let fields = this.state.fields;
-    fields[field] = e.target.value;
-    this.setState({fields});
-    // Не совсем понимаю, как зайдествовать для каждого поля счетчик отдельно. Понимаю, как работает setState и то, что prev мне нужно указать на прошлое значение.
-    this.setState((prev) => {return{chrLeft: charLength} });
+  const onChangeField = (e) => {
+    setState({
+      ...state,
+      [e.target.name]: e.target.value,
+    })
   }
 
-  onChangeField(field, e) {
-    let fields = this.state.fields;
-    fields[field] = e.target.value;
-    this.setState({fields});
+  const resetForm = () => {
+    return setState(initValues);
   }
 
-  resetForm = () => {
-    this.setState({
-      fields: {name: '', lastName: '', date: '', tel: '', site: '', about: '', tech: '', desc: ''},
-    });
-  }
-
-  submitForm(e) {
-    e.preventDefault();
-    if (this.handleValidation()) {
-      this.setState({formIsValid: true})
+  const submitForm = (e) => {
+    if (e && e.preventDefault) { e.preventDefault(); }
+    if (handleValidation()) {
+      setState({
+        ...state,
+        formIsValid: true,
+      });
+      setIsShowPopup(true);
     } else {
       alert("В форме присутствуют ошибки. Пожалуйста, исправьте их и попробуйте снова");
     }
   }
-
-  render() {
-    const { name, lastName, date, tel, site, about, tech, desc } = this.state.fields;
-
-    return (
-      <section className='app'>
-        <div className="bg-img"></div>
-        <div className="wrapper">
-          <div className="form-container">
-            <div className="left">
-              <h1>Создание анкеты</h1>
-            </div>
-            <div className="right">
-              <form onSubmit={this.submitForm.bind(this)}>
-                {!this.state.formIsValid
+  return (
+    <section className='app'>
+      <div className="bg-img"></div>
+      <div className="wrapper">
+        <div className="form-container">
+          <div className="left">
+            <h1>Создание анкеты</h1>
+          </div>
+          <div className="right">
+            <form onSubmit={submitForm}>
+              {!state.formIsValid
                 ?
                 <>
-                <Input type="text" name="Имя" value={name} onChange={this.onChangeField.bind(this, "name")} />
-                <span style={{ color: "red" }}>{this.state.errors["name"]}</span>
-                <Input type="text" name="Фамилия" value={lastName} onChange={this.onChangeField.bind(this, "lastName")} />
-                <span style={{ color: "red" }}>{this.state.errors["lastName"]}</span>
-                <Input type="date" name="Дата рождения" value={date} onChange={this.onChangeField.bind(this, "date")} />
-                <Input type="tel" name="Телефон" value={tel} onChange={this.phoneMask.bind(this, "tel")} />
-                <span style={{ color: "red" }}>{this.state.errors["tel"]}</span>
-                <Input type="text" name="Сайт" value={site} onChange={this.onChangeField.bind(this, "site")} />
-                <span style={{ color: "red" }}>{this.state.errors["site"]}</span>
-                <Textarea name="О себе" value={about} onChange={this.textareaLimit.bind(this, "about")}/>
-                {about.length === this.state.chrLimit ? <p style={{color: "red"}}>Превышен лимит символов в поле</p>
-                :
-                <p>Осталось {this.state.chrLeft} символов  из {this.state.chrLimit}</p>
-                }
-                <Textarea name="Стек технологий" value={tech} onChange={this.textareaLimit.bind(this, "tech")} />
-                {tech.length === this.state.chrLimit ? <p style={{color: "red"}}>Превышен лимит символов в поле</p>
-                :
-                <p>Осталось {this.state.chrLeft} символов  из {this.state.chrLimit}</p>
-                }
-                <Textarea name="Описание последнего проекта" value={desc} onChange={this.textareaLimit.bind(this, "desc")} />
-                {desc.length === this.state.chrLimit ? <p style={{color: "red"}}>Превышен лимит символов в поле</p>
-                :
-                <p>Осталось {this.state.chrLeft} символов  из {this.state.chrLimit}</p>
-                }
-                <div className="button-box">
-                  <Button type="submit" name="Сохранить" />
-                  <Button type="reset" onClick={this.resetForm} name="Отмена"/>
-                </div>
+                  <Input error={state.errors.name} type="text" labelname="Имя" name="name" value={state.name} onChange={onChangeField} />
+                  <Input error={state.errors.lastName} type="text" labelname="Фамилия" name="lastName" value={state.lastName} onChange={onChangeField} />
+                  <Input error={state.errors.date} type="date" labelname="Дата рождения" name="date" value={state.date} onChange={onChangeField} />
+                  <Input error={state.errors.tel} type="tel" labelname="Телефон" name="tel" value={state.tel} onChange={phoneMask} />
+                  <Input error={state.errors.site} type="text" labelname="Сайт" name="site" value={state.site} onChange={onChangeField} />
+                  <Textarea labelname="О себе" name="about" value={state.about} onChange={onChangeField} />
+                  <Textarea labelname="Стек технологий" name="tech" value={state.tech} onChange={onChangeField} />
+                  <Textarea labelname="Описание последнего проекта" name="desc" value={state.desc} onChange={onChangeField} />
+                  <div className="button-box">
+                    <Button type="submit" name="Сохранить" />
+                    <Button type="reset" onClick={resetForm} name="Отмена" />
+                  </div>
                 </>
                 :
-                <div className='personalForm'>
-                  <p>Имя: {name}</p>
-                  <p>Фамилия: {lastName}</p>
-                  <p>Дата рождения: {date}</p>
-                  <p>Телефон: {name}</p>
-                  <p>Сайт: {site}</p>
-                  <p>О себе: {about}</p>
-                  <p>Стек технологий: {tech}</p>
-                  <p>Описание последнего проекта: {desc}</p>
-                </div>
-                }
-              </form>
-            </div>
+                <CompletedForm state={state} />
+              }
+            </form>
           </div>
         </div>
-      </section>
-    )
-  }
+      </div>
+      <Popup isShowUp={isShowUp} setIsShowPopup={setIsShowPopup} />
+    </section>
+  )
 }
 
 export default App;

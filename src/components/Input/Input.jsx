@@ -1,15 +1,16 @@
-import React from 'react';
+import React from "react";
 import styles from "./Input.module.css";
 
-class Input extends React.Component {
-  render() {
-    return (
-      <label className={styles['input-group']} htmlFor={this.props.name}>
-        {this.props.name}
-        <input {...this.props} id={this.props.name} required />
-      </label>
-    )
-  }
-}
+const Input = (props) => {
+	return (
+		<>
+			<label className={styles["input-group"]} htmlFor={props.labelname}>
+				{props.labelname}
+				<input {...props} id={props.labelname} required />
+			</label>
+			<span style={{ color: "red" }}>{props.error}</span>
+		</>
+	);
+};
 
 export default Input;
